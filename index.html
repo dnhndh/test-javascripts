@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>Getting Started With Fetch API</h1>
+      <button id="fetchJsonData">Fetch User Data</button>
+    </div>
+    <hr />
+    <div id="response"></div>
+  </body>
+  <script>
+    document
+      .getElementById("fetchJsonData")
+      .addEventListener("click", callAjax);
+    function logData(data) {
+      console.log(data);
+      let result = data;
+      console.log("result", result);
+      let sortedResult = result.sort((a, b) => a.title.localeCompare(b.title));
+      // .forEach((item) => console.log(item));
+      console.log("sortedResult", sortedResult);
+    }
+    function fetchJson() {
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then((response) => response.json())
+        .then((json) => {
+          logData(json);
+        });
+    }
+
+    function callAjax() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          var oglasi = JSON.parse(xhr.responseText);
+          console.log(oglasi);
+        }
+      };
+
+      xhr.open("GET", "https://jsonplaceholder.typicode.com/posts");
+      xhr.send();
+    }
+  </script>
+  <script src="./app.js"></script>
+</html>
