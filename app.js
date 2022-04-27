@@ -42,3 +42,28 @@ function compare(array) {
 }
 
 console.log(compare(arr));
+
+var Animal = {
+  name: "",
+  age: "",
+  sounds: function (sounds) {
+    console.log(sounds);
+  },
+};
+
+const Cow = Object.create(Animal);
+Cow.name = "CowName";
+Cow.age = 3;
+Cow.sounds("mooo");
+
+const Sheep = Object.create(Animal);
+Sheep.name = "SheepName";
+Sheep.age = 2;
+Sheep.sounds("woof");
+
+const Cat = Object.create(Animal);
+Cat.name = "Kitty";
+Cat.age = 1;
+Cat.sounds("meow meow");
+
+console.log(Cow);
