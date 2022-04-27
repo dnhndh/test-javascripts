@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>Getting Started With Fetch API</h1>
+      <button id="fetchJsonData">Fetch User Data</button>
+    </div>
+    <hr />
+    <div id="response"></div>
+  </body>
+
+  <script>
+    class Animal {
+      constructor(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+      sound() {
+        console.log("Make Sound");
+      }
+    }
+
+    class Cow extends Animal {
+      sound() {
+        return "mooo";
+      }
+    }
+
+    class Sheep extends Animal {
+      sound() {
+        return "woof";
+      }
+    }
+
+    class Cat extends Animal {
+      sound() {
+        return "meow";
+      }
+    }
+
+    let cow = new Cow("Cow", 10); // Create a new object
+    let sheep = new Sheep("Sheep", 11); // Create a new object
+    let cat = new Cat("Cat", 12); // Create a new object
+
+    console.log(`${cow.name} - ${cow.age} age - ${cow.sound()}`); // Cow { name: 'Peppa', age: 12 }
+    console.log(`${sheep.name} - ${sheep.age} age - ${sheep.sound()}`); // Cow { name: 'Peppa', age: 12 }
+    console.log(`${cat.name} - ${cat.age} age - ${cat.sound()}`); // Cow { name: 'Peppa', age: 12 }
+  </script>
+</html>
