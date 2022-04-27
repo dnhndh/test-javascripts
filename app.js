@@ -13,28 +13,32 @@ var arr = [
   ")",
   "ABC",
 ];
-function naturalSort(a) {
-  return a
-    .reduce(
-      (p, c) => {
-        /[A-Z]/i.test(c)
-          ? p[0].push(c)
-          : /\d+/.test(c)
-          ? p[1].push(c * 1)
-          : p[2].push(c);
-        console.log(p[2]);
-        return p;
-      },
-      [[], [], []]
-    )
-    .reduce(
-      (p, c) =>
-        p.concat(
-          c
-            .sort((p, c) => (p < c ? -1 : 1))
-            .map((e) => (typeof e == "number" ? e.toString() : e))
-        ),
-      []
-    );
+var symbols = "()[]{}!@#$%¨&*-_=+".split("");
+
+function compare(array) {
+  array.sort((a, b) => {
+    if (symbols.indexOf(a) > -1) a = "zzzzzzz";
+    if (symbols.indexOf(b) > -1) b = "zzzzzzz";
+
+    if (!isNaN(Number(a)) && !isNaN(Number(b))) {
+      if (Number(a) > Number(b)) {
+        return 1;
+      } else if (Number(a) < Number(b)) {
+        return -1;
+      } else {
+        return 0;
+      }
+    } else {
+      if (a.toUpperCase() > b.toUpperCase()) {
+        return 1;
+      } else if (a.toUpperCase() < b.toUpperCase()) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  });
+  return array;
 }
-console.log(naturalSort(arr));
+
+console.log(compare(arr));
