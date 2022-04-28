@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marvel™</title>
+    <link rel="stylesheet" href="./style.css" />
     <style>
       * {
         margin: 0;
@@ -29,7 +30,7 @@
         flex-direction: column;
         align-items: center;
       }
-      input {
+      .input input {
         width: 400px;
         padding: 10px;
         border-radius: 15px;
@@ -92,6 +93,70 @@
         <img src="./img/Spinner-1.gif" id="loading" />
       </div>
       <div id="characters"></div>
+      <div class="search-result">
+        <form action="">
+          <div class="suggestion">
+            <div class="suggestion-header">
+              <p class="suggestion-header-title">suggestions</p>
+              <input type="checkbox" name="" id="" />
+            </div>
+            <div class="suggestion-content">
+              <ul>
+                <li>cotton top</li>
+                <li>top sportwear</li>
+                <li>red top</li>
+                <li>green top</li>
+              </ul>
+            </div>
+          </div>
+          <div class="collection">
+            <div class="collection-header">
+              <p class="collection-header-title">collections</p>
+              <input type="checkbox" name="" id="" />
+            </div>
+            <div class="collection-content">
+              <ul>
+                <li>Tops</li>
+              </ul>
+            </div>
+          </div>
+          <div class="product">
+            <div class="product-header">
+              <p class="product-header-title">products</p>
+              <input type="checkbox" name="" id="" />
+            </div>
+            <div class="product-content">
+              <ul>
+                <li>
+                  <img class="product-image" src="img/product-3.png" alt="" />
+                  <div class="product-info">
+                    <p class="product-info-name">Satin top</p>
+                    <p class="product-info-brand">Forever 21</p>
+                    <p class="product-info-price">$15.5</p>
+                  </div>
+                </li>
+                <li>
+                  <img class="product-image" src="img/product-1.png" alt="" />
+                  <div class="product-info">
+                    <p class="product-info-name">Blackcotton top</p>
+                    <p class="product-info-brand">Gucci</p>
+                    <p class="product-info-price">$64.5</p>
+                  </div>
+                </li>
+                <li>
+                  <img class="product-image" src="img/product-2.png" alt="" />
+                  <div class="product-info">
+                    <p class="product-info-name">Trumpet top</p>
+                    <p class="product-info-brand">Gucci</p>
+                    <p class="product-info-price">$41.5</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <button class="btn-view-all">view all 33 products</button>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

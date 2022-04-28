@@ -1,0 +1,104 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+input {
+  margin-left: 10px;
+}
+.search-result {
+  width: 375px;
+  background-color: #fff;
+  position: relative;
+  z-index: 999;
+}
+.search-result::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  border-bottom: 5px solid #ecf6e6;
+  position: absolute;
+  top: -5px;
+  right: 10px;
+}
+.suggestion .suggestion-header,
+.collection .collection-header,
+.product .product-header {
+  background-color: #ecf6e6;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.suggestion .suggestion-header .suggestion-header-title,
+.collection .collection-header .collection-header-title,
+.product .product-header .product-header-title {
+  color: #ccc;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.suggestion .suggestion-content ul li,
+.collection .collection-content ul li {
+  color: #000;
+  font-size: 12px;
+  padding: 5px;
+  font-weight: 400;
+}
+
+.suggestion .suggestion-content ul li:hover,
+.collection .collection-content ul li:hover {
+  background-color: #eaeaf3;
+  color: #90909b;
+}
+
+.product .product-content ul li {
+  display: flex;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.product .product-content ul li:hover {
+  opacity: 0.5;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.product .product-content ul li .product-image {
+  width: 90px;
+  padding-left: 15px;
+}
+ul li .product-info {
+  margin-left: 15px;
+}
+ul li .product-info .product-info-name {
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: 5px;
+}
+ul li .product-info .product-info-brand {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: 5px;
+}
+ul li .product-info .product-info-price {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+}
+.product .btn-view-all {
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  padding: 10px 0;
+  text-align: center;
+  text-transform: uppercase;
+  color: #a0a093;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
