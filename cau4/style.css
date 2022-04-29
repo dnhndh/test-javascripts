@@ -1,4 +1,7 @@
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
 ul {
@@ -6,9 +9,115 @@ ul {
   padding: 0;
   list-style: none;
 }
-input {
-  margin-left: 10px;
+body {
+  background-color: #202020;
+  color: #00fbff;
+  font-weight: bold;
+  background-image: url(./img/logo2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  backdrop-filter: blur(5px);
 }
+/* start setting */
+div.setting {
+  padding: 30px;
+  margin: 20px;
+  border: 1px solid;
+}
+div.setting h1 {
+  margin-bottom: 20px;
+  color: red;
+  text-transform: uppercase;
+}
+div.setting ul li {
+  margin-bottom: 10px;
+}
+div.setting input[type="submit"] {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 0;
+}
+/* end setting */
+
+/* start search box */
+
+.searchBox {
+  width: 350px;
+  min-width: 250px;
+  margin: 10vh auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input input {
+  width: 350px;
+  padding: 10px;
+  border-radius: 15px;
+  outline: none;
+  border: none;
+}
+@media (min-width: 425px) {
+  .input input {
+    width: 400px;
+  }
+  .searchBox {
+    width: 400px;
+  }
+}
+.input {
+  z-index: 1;
+}
+
+#searchResult {
+  background: #fff;
+  width: 100%;
+  visibility: hidden;
+  margin-top: 10px;
+  position: relative;
+}
+#searchResult::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #ecf6e6;
+  position: absolute;
+  top: -5px;
+  right: 10px;
+}
+#characters {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+#characters::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 3px;
+}
+#characters::-webkit-scrollbar-thumb {
+  background-color: #83f7fc;
+  border-radius: 10px;
+}
+
+#loading {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-top: 4px;
+  margin-left: -31px;
+  visibility: hidden;
+}
+#products img {
+  max-width: 50px;
+  margin-right: 15px;
+}
+#products p {
+  margin-bottom: 10px;
+  color: #000;
+}
+
 .search-result {
   width: 375px;
   background-color: #fff;
@@ -16,16 +125,6 @@ input {
   z-index: 999;
 }
 .search-result::before {
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-
-  border-bottom: 5px solid #ecf6e6;
-  position: absolute;
-  top: -5px;
-  right: 10px;
 }
 .suggestion .suggestion-header,
 .collection .collection-header,
@@ -102,3 +201,4 @@ ul li .product-info .product-info-price {
   font-weight: 600;
   cursor: pointer;
 }
+/* end search box */

@@ -6,95 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marvel™</title>
     <link rel="stylesheet" href="./style.css" />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        background-color: #202020;
-        color: #00fbff;
-        font-weight: bold;
-        background-image: url(./img/logo2.jpg);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        backdrop-filter: blur(5px);
-      }
-      div.setting {
-        padding: 30px;
-        margin: 20px;
-        border: 1px solid;
-      }
-      div.setting h1 {
-        margin-bottom: 20px;
-        color: red;
-      }
-      .searchBox {
-        width: 50vw;
-        min-width: 250px;
-        margin: 10vh auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      .input input {
-        width: 400px;
-        padding: 10px;
-        border-radius: 15px;
-        outline: none;
-        border: none;
-      }
-      .input {
-        z-index: 1;
-      }
-
-      #searchResult {
-        background: #fff;
-        width: 85%;
-        visibility: hidden;
-      }
-      #characters {
-        max-height: 300px;
-        overflow-y: scroll;
-      }
-      #characters::-webkit-scrollbar {
-        width: 6px;
-        border-radius: 3px;
-      }
-      #characters::-webkit-scrollbar-thumb {
-        background-color: #83f7fc;
-        border-radius: 10px;
-      }
-
-      #loading {
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        margin-top: 4px;
-        margin-left: -31px;
-        visibility: hidden;
-      }
-      #products img {
-        max-width: 50px;
-        margin-right: 15px;
-      }
-      #products p {
-        margin-bottom: 10px;
-        color: #000;
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <div class="setting">
       <form onsubmit="return doSetting()">
         <div>
-          <h1>settings</h1>
+          <h1>Settings</h1>
           <ul>
             <li>
-              <label for="checkSuggest">show suggest character</label>
+              <label for="checkSuggest">Show suggest character</label>
               <input
                 type="checkbox"
                 id="checkSuggest"
@@ -103,7 +24,7 @@
               />
             </li>
             <li>
-              <label for="checkCollection">show suggest collection</label>
+              <label for="checkCollection">Show suggest collection</label>
               <input
                 type="checkbox"
                 id="checkCollection"
@@ -112,7 +33,7 @@
               />
             </li>
             <li>
-              <label for="checkProduct">show suggest product</label>
+              <label for="checkProduct">Show suggest product</label>
               <input
                 type="checkbox"
                 id="checkProduct"
@@ -148,7 +69,6 @@
           <div class="suggestion">
             <div class="suggestion-header">
               <p class="suggestion-header-title">suggestions</p>
-              <input type="checkbox" name="" id="" />
             </div>
             <div class="suggestion-content">
               <ul id="characters"></ul>
@@ -157,7 +77,6 @@
           <div class="collection">
             <div class="collection-header">
               <p class="collection-header-title">collections</p>
-              <input type="checkbox" name="" id="" />
             </div>
             <div class="collection-content">
               <ul id="collections"></ul>
@@ -166,7 +85,6 @@
           <div class="product">
             <div class="product-header">
               <p class="product-header-title">products</p>
-              <input type="checkbox" name="" id="" />
             </div>
             <div class="product-content">
               <ul id="products"></ul>
@@ -305,9 +223,11 @@
 
         let p_name = document.createElement("span");
         p_name.innerHTML = el.term;
-
+        p_name.style.fontSize = "13px";
+        p_name.style.color = "#000";
         let a_name = document.createElement("a");
         a_name.href = el.url;
+        a_name.style.textDecoration = "none";
 
         a_name.append(p_name);
         liE.append(a_name);
@@ -318,7 +238,7 @@
     if (d.term.length == 0) {
       let p_error = document.createElement("p");
       p_error.innerHTML = "Not found or check again";
-      p_error.style.fontSize = "30px";
+      p_error.style.fontSize = "18px";
       p_error.style.textAlign = "center";
       characters_div.append(p_error);
     }
@@ -328,9 +248,12 @@
 
         let p_name = document.createElement("span");
         p_name.innerHTML = el.title;
+        p_name.style.fontSize = "13px";
+        p_name.style.color = "#000";
 
         let a_name = document.createElement("a");
         a_name.href = el.url;
+        a_name.style.textDecoration = "none";
 
         a_name.append(p_name);
         liE.append(a_name);
@@ -341,7 +264,7 @@
     if (d.collection.length == 0) {
       let p_error = document.createElement("p");
       p_error.innerHTML = "No collection Found";
-      p_error.style.fontSize = "30px";
+      p_error.style.fontSize = "18px";
       p_error.style.textAlign = "center";
 
       collections_div.append(p_error);
@@ -373,7 +296,7 @@
     if (d.product.length == 0) {
       let p_error = document.createElement("p");
       p_error.innerHTML = "No product Found";
-      p_error.style.fontSize = "30px";
+      p_error.style.fontSize = "18px";
       p_error.style.textAlign = "center";
 
       products_div.append(p_error);
