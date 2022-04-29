@@ -179,11 +179,21 @@
 </html>
 
 <script>
+  // define api
+  const getListChar =
+    "https://api.json-generator.com/templates/DTPRZfJQMCHV/data";
+  const getListCollection =
+    "https://api.json-generator.com/templates/pPYRLlfbeG0g/data";
+  const getListProduct =
+    "https://api.json-generator.com/templates/478NCObvctZK/data";
+
   let characters_div = document.getElementById("characters");
   let result_div = document.getElementById("searchResult");
   let collections_div = document.getElementById("collections");
   let products_div = document.getElementById("products");
+
   //setting variants
+
   let sChar = document.getElementById("checkSuggest");
   let sCollec = document.getElementById("checkCollection");
   let sProduct = document.getElementById("checkProduct");
@@ -192,10 +202,11 @@
   //loading
 
   let loading = document.getElementById("loading");
-
   let timerId;
   let dataSugesst;
   let defaultSetting;
+
+  // define header
 
   const myHeaders = new Headers({
     Authorization: "Bearer " + "5ytrh2wlhz3ofqq3apr48hn2dv0nbebcoksof423",
@@ -212,6 +223,7 @@
     }, 300);
   };
 
+  //check hiden result search
   const main = () => {
     let query = document.getElementById("query").value;
     if (defaultSetting && query.length >= defaultSetting.nChatacter) {
@@ -220,8 +232,8 @@
       appendcharacters(res); // Add results to the div;
     } else if (!defaultSetting && query.length > 0) {
       result_div.style.visibility = "visible";
-      let res = searchcharacters(); // Returned array will be a promise;
-      appendcharacters(res); // Add results to the div;
+      let res = searchcharacters();
+      appendcharacters(res);
     } else {
       console.log(defaultSetting);
       result_div.style.visibility = "hidden";
@@ -230,31 +242,22 @@
 
   document.addEventListener("DOMContentLoaded", async function getTerms(event) {
     getSetting();
-    //call api
+    //call api when load page
     try {
-      let resTerm = await fetch(
-        `https://api.json-generator.com/templates/DTPRZfJQMCHV/data`,
-        {
-          headers: myHeaders,
-          method: "GET",
-        }
-      );
+      let resTerm = await fetch(getListChar, {
+        headers: myHeaders,
+        method: "GET",
+      });
       let term = await resTerm.json();
-      let resCollection = await fetch(
-        `https://api.json-generator.com/templates/pPYRLlfbeG0g/data`,
-        {
-          headers: myHeaders,
-          method: "GET",
-        }
-      );
+      let resCollection = await fetch(getListCollection, {
+        headers: myHeaders,
+        method: "GET",
+      });
       let collection = await resCollection.json();
-      let resProduct = await fetch(
-        `https://api.json-generator.com/templates/478NCObvctZK/data`,
-        {
-          headers: myHeaders,
-          method: "GET",
-        }
-      );
+      let resProduct = await fetch(getListProduct, {
+        headers: myHeaders,
+        method: "GET",
+      });
       let product = await resProduct.json();
       dataSugesst = { term: term, collection: collection, product: product };
       console.log(dataSugesst);
@@ -264,6 +267,7 @@
     }
   });
 
+  // function filter data by query
   const searchcharacters = () => {
     let query = document.getElementById("query").value;
     if (
@@ -289,6 +293,7 @@
     }
   };
 
+  // function apply result to dom
   const appendcharacters = (d) => {
     characters_div.innerHTML = "";
     collections_div.innerHTML = "";
@@ -374,6 +379,7 @@
       products_div.append(p_error);
     }
   };
+
   //do form
   const doSetting = () => {
     let dataForm = new FormData();
@@ -387,14 +393,16 @@
     for (let [k, v] of dataForm.entries()) {
       data[k] = v;
     }
-    console.log(data);
     saveSetting(data);
     return false;
   };
+
+  // save setting to localstoreage
   const saveSetting = (el) => {
     localStorage.setItem("setting", JSON.stringify(el));
     location.reload();
   };
+  // get setting to localstoreage
   const getSetting = () => {
     defaultSetting = JSON.parse(localStorage.getItem("setting"));
     if (defaultSetting) {
