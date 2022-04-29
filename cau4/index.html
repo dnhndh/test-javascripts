@@ -40,15 +40,14 @@
       .input {
         z-index: 1;
       }
-      #characters {
-        position: absolute;
-        padding: 35px 10px 0px;
-        width: 400px;
-        max-height: 300px;
-        border-radius: 24px;
-        border: 2px solid rgb(219, 209, 163);
-        border-top: none;
+
+      #searchResult {
+        background: #fff;
+        width: 85%;
         visibility: hidden;
+      }
+      #characters {
+        max-height: 300px;
         overflow-y: scroll;
       }
       #characters::-webkit-scrollbar {
@@ -59,17 +58,7 @@
         background-color: #83f7fc;
         border-radius: 10px;
       }
-      #characters div {
-        display: flex;
-        border-top: 1px solid #83f7fc;
-        justify-content: space-between;
-        padding: 10px 5px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      #characters div:hover {
-        background-color: #ab3228;
-      }
+
       #loading {
         position: absolute;
         width: 25px;
@@ -78,6 +67,14 @@
         margin-top: 4px;
         margin-left: -31px;
         visibility: hidden;
+      }
+      #products img {
+        max-width: 50px;
+        margin-right: 15px;
+      }
+      #products p {
+        margin-bottom: 10px;
+        color: #000;
       }
     </style>
   </head>
@@ -92,8 +89,7 @@
         />
         <img src="./img/Spinner-1.gif" id="loading" />
       </div>
-      <div id="characters"></div>
-      <div class="search-result">
+      <div id="searchResult">
         <form action="">
           <div class="suggestion">
             <div class="suggestion-header">
@@ -101,12 +97,7 @@
               <input type="checkbox" name="" id="" />
             </div>
             <div class="suggestion-content">
-              <ul>
-                <li>cotton top</li>
-                <li>top sportwear</li>
-                <li>red top</li>
-                <li>green top</li>
-              </ul>
+              <ul id="characters"></ul>
             </div>
           </div>
           <div class="collection">
@@ -115,9 +106,7 @@
               <input type="checkbox" name="" id="" />
             </div>
             <div class="collection-content">
-              <ul>
-                <li>Tops</li>
-              </ul>
+              <ul id="collections"></ul>
             </div>
           </div>
           <div class="product">
@@ -126,34 +115,8 @@
               <input type="checkbox" name="" id="" />
             </div>
             <div class="product-content">
-              <ul>
-                <li>
-                  <img class="product-image" src="img/product-3.png" alt="" />
-                  <div class="product-info">
-                    <p class="product-info-name">Satin top</p>
-                    <p class="product-info-brand">Forever 21</p>
-                    <p class="product-info-price">$15.5</p>
-                  </div>
-                </li>
-                <li>
-                  <img class="product-image" src="img/product-1.png" alt="" />
-                  <div class="product-info">
-                    <p class="product-info-name">Blackcotton top</p>
-                    <p class="product-info-brand">Gucci</p>
-                    <p class="product-info-price">$64.5</p>
-                  </div>
-                </li>
-                <li>
-                  <img class="product-image" src="img/product-2.png" alt="" />
-                  <div class="product-info">
-                    <p class="product-info-name">Trumpet top</p>
-                    <p class="product-info-brand">Gucci</p>
-                    <p class="product-info-price">$41.5</p>
-                  </div>
-                </li>
-              </ul>
+              <ul id="products"></ul>
             </div>
-            <button class="btn-view-all">view all 33 products</button>
           </div>
         </form>
       </div>
@@ -163,6 +126,10 @@
 
 <script>
   let characters_div = document.getElementById("characters");
+  let result_div = document.getElementById("searchResult");
+  let collections_div = document.getElementById("collections");
+  let products_div = document.getElementById("products");
+
   let loading = document.getElementById("loading");
 
   let timerId;
@@ -174,58 +141,163 @@
     timerId = setTimeout(() => {
       loading.style.visibility = "hidden";
       main();
-    }, 1000);
+    }, 300);
   };
 
-  const main = async () => {
+  const main = () => {
     let query = document.getElementById("query").value;
     if (query.length > 0) {
-      characters_div.innerHTML = null;
-      characters_div.style.visibility = "visible";
-      let characters = await searchcharacters(); // Returned array will be a promise;
-      appendcharacters(characters); // Add results to the div;
+      result_div.style.visibility = "visible";
+      let res = searchcharacters(); // Returned array will be a promise;
+      appendcharacters(res); // Add results to the div;
     } else {
-      characters_div.style.visibility = "hidden";
+      result_div.style.visibility = "hidden";
     }
   };
 
-  const searchcharacters = async () => {
-    let query = document.getElementById("query").value;
-
-    let res = await fetch(
-      `https://gateway.marvel.com/v1/public/characters?nameStartsWith=${query}&ts=1&orderBy=name&limit=10&apikey=c1829d4300eae29b8a93e85f091a8576&hash=4e137825c642c018bd982879cdbd7805`
+  const myHeaders = new Headers({
+    Authorization: "Bearer " + "5ytrh2wlhz3ofqq3apr48hn2dv0nbebcoksof423",
+    "Content-Type": "application/json",
+  });
+  var dataSugesst;
+  document.addEventListener("DOMContentLoaded", async function getTerms(event) {
+    let resTerm = await fetch(
+      `https://api.json-generator.com/templates/DTPRZfJQMCHV/data`,
+      {
+        headers: myHeaders,
+        method: "GET",
+      }
     );
-    let data = await res.json();
-    return data.data.results; //returning character result array;
+    let term = await resTerm.json();
+    let resCollection = await fetch(
+      `https://api.json-generator.com/templates/pPYRLlfbeG0g/data`,
+      {
+        headers: myHeaders,
+        method: "GET",
+      }
+    );
+    let collection = await resCollection.json();
+    let resProduct = await fetch(
+      `https://api.json-generator.com/templates/478NCObvctZK/data`,
+      {
+        headers: myHeaders,
+        method: "GET",
+      }
+    );
+    let product = await resProduct.json();
+    dataSugesst = { term: term, collection: collection, product: product };
+    console.log(dataSugesst);
+    return collection;
+  });
+
+  const searchcharacters = () => {
+    let query = document.getElementById("query").value;
+    if (
+      dataSugesst.term.length != 0 &&
+      dataSugesst.product.length != 0 &&
+      dataSugesst.collection.length != 0
+    ) {
+      let newTerm = dataSugesst.term.filter((el) =>
+        el.term.toUpperCase().includes(query.toUpperCase())
+      );
+      let newCollection = dataSugesst.collection.filter((el) =>
+        el.title.toUpperCase().includes(query.toUpperCase())
+      );
+      let newProduct = dataSugesst.product.filter(
+        (el) =>
+          el.title.toUpperCase().includes(query.toUpperCase()) ||
+          el.brand.includes(query)
+      );
+
+      return { term: newTerm, collection: newCollection, product: newProduct };
+    } else {
+      return { term: [], collection: [], product: [] };
+    }
   };
 
   const appendcharacters = (d) => {
-    if (d.length == 0) {
+    characters_div.innerHTML = "";
+    collections_div.innerHTML = "";
+    products_div.innerHTML = "";
+
+    if (d.term.length !== 0) {
+      d.term.forEach((el) => {
+        let liE = document.createElement("li");
+
+        let p_name = document.createElement("span");
+        p_name.innerHTML = el.term;
+
+        let a_name = document.createElement("a");
+        a_name.href = el.url;
+
+        a_name.append(p_name);
+        liE.append(a_name);
+
+        characters_div.append(liE);
+      });
+    }
+    if (d.term.length == 0) {
       let p_error = document.createElement("p");
-      p_error.innerHTML = "No Match Found";
+      p_error.innerHTML = "Not found or check again";
       p_error.style.fontSize = "30px";
       p_error.style.textAlign = "center";
       characters_div.append(p_error);
-    } else {
-      d.forEach((el) => {
-        let div = document.createElement("div");
-        div.addEventListener("click", () => {
-          charDetails(el);
-        });
+    }
+    if (d.collection.length != 0) {
+      d.collection.forEach((el) => {
+        let liE = document.createElement("li");
 
         let p_name = document.createElement("span");
-        p_name.innerHTML = el.name;
+        p_name.innerHTML = el.title;
 
-        // let p_img = document.createElement("img");
-        // p_img.src = el.thumbnail.path;
+        let a_name = document.createElement("a");
+        a_name.href = el.url;
 
-        // let p_gender = document.createElement("span");
-        // p_gender.innerHTML = el.thumbnail.path;
+        a_name.append(p_name);
+        liE.append(a_name);
 
-        div.append(p_name);
-
-        characters_div.append(div);
+        collections_div.append(liE);
       });
+    }
+    if (d.collection.length == 0) {
+      let p_error = document.createElement("p");
+      p_error.innerHTML = "No collection Found";
+      p_error.style.fontSize = "30px";
+      p_error.style.textAlign = "center";
+
+      collections_div.append(p_error);
+    }
+    if (d.product.length != 0) {
+      d.product.forEach((el) => {
+        let liE = document.createElement("li");
+
+        let img = document.createElement("img");
+        img.src = el.image;
+        img.class = "product-image";
+        let divIn4 = document.createElement("div");
+        divIn4.class = "product-info";
+
+        let p_name = document.createElement("p");
+        p_name.innerHTML = el.title;
+
+        let p_brand = document.createElement("p");
+        p_brand.innerHTML = el.brand;
+        let p_price = document.createElement("p");
+        p_price.innerHTML = `${el.price} usd`;
+
+        divIn4.append(p_name, p_brand, p_price);
+        liE.append(img, divIn4);
+
+        products_div.append(liE);
+      });
+    }
+    if (d.product.length == 0) {
+      let p_error = document.createElement("p");
+      p_error.innerHTML = "No product Found";
+      p_error.style.fontSize = "30px";
+      p_error.style.textAlign = "center";
+
+      products_div.append(p_error);
     }
   };
 
