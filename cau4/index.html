@@ -22,6 +22,15 @@
         background-attachment: fixed;
         backdrop-filter: blur(5px);
       }
+      div.setting {
+        padding: 30px;
+        margin: 20px;
+        border: 1px solid;
+      }
+      div.setting h1 {
+        margin-bottom: 20px;
+        color: red;
+      }
       .searchBox {
         width: 50vw;
         min-width: 250px;
@@ -79,6 +88,51 @@
     </style>
   </head>
   <body>
+    <div class="setting">
+      <form onsubmit="return doSetting()">
+        <div>
+          <h1>settings</h1>
+          <ul>
+            <li>
+              <label for="checkSuggest">show suggest character</label>
+              <input
+                type="checkbox"
+                id="checkSuggest"
+                name="checkSuggest"
+                checked
+              />
+            </li>
+            <li>
+              <label for="checkCollection">show suggest collection</label>
+              <input
+                type="checkbox"
+                id="checkCollection"
+                name="checkCollection"
+                checked
+              />
+            </li>
+            <li>
+              <label for="checkProduct">show suggest product</label>
+              <input
+                type="checkbox"
+                id="checkProduct"
+                name="checkProduct"
+                checked
+              />
+            </li>
+            <li>
+              <label for="username"
+                >Change the number of character that makes the Suggestion
+                display when typing</label
+              >
+              <input type="number" id="nChatacter" name="nChatacter" />
+            </li>
+          </ul>
+        </div>
+
+        <input type="submit" value="Submit!" />
+      </form>
+    </div>
     <div class="searchBox">
       <div class="input">
         <input
@@ -129,10 +183,24 @@
   let result_div = document.getElementById("searchResult");
   let collections_div = document.getElementById("collections");
   let products_div = document.getElementById("products");
+  //setting variants
+  let sChar = document.getElementById("checkSuggest");
+  let sCollec = document.getElementById("checkCollection");
+  let sProduct = document.getElementById("checkProduct");
+  let sNumberType = document.getElementById("nChatacter");
+
+  //loading
 
   let loading = document.getElementById("loading");
 
   let timerId;
+  let dataSugesst;
+  let defaultSetting;
+
+  const myHeaders = new Headers({
+    Authorization: "Bearer " + "5ytrh2wlhz3ofqq3apr48hn2dv0nbebcoksof423",
+    "Content-Type": "application/json",
+  });
 
   const throttleFn = () => {
     loading.style.visibility = "visible";
@@ -146,48 +214,54 @@
 
   const main = () => {
     let query = document.getElementById("query").value;
-    if (query.length > 0) {
+    if (defaultSetting && query.length >= defaultSetting.nChatacter) {
+      result_div.style.visibility = "visible";
+      let res = searchcharacters(); // Returned array will be a promise;
+      appendcharacters(res); // Add results to the div;
+    } else if (!defaultSetting && query.length > 0) {
       result_div.style.visibility = "visible";
       let res = searchcharacters(); // Returned array will be a promise;
       appendcharacters(res); // Add results to the div;
     } else {
+      console.log(defaultSetting);
       result_div.style.visibility = "hidden";
     }
   };
 
-  const myHeaders = new Headers({
-    Authorization: "Bearer " + "5ytrh2wlhz3ofqq3apr48hn2dv0nbebcoksof423",
-    "Content-Type": "application/json",
-  });
-  var dataSugesst;
   document.addEventListener("DOMContentLoaded", async function getTerms(event) {
-    let resTerm = await fetch(
-      `https://api.json-generator.com/templates/DTPRZfJQMCHV/data`,
-      {
-        headers: myHeaders,
-        method: "GET",
-      }
-    );
-    let term = await resTerm.json();
-    let resCollection = await fetch(
-      `https://api.json-generator.com/templates/pPYRLlfbeG0g/data`,
-      {
-        headers: myHeaders,
-        method: "GET",
-      }
-    );
-    let collection = await resCollection.json();
-    let resProduct = await fetch(
-      `https://api.json-generator.com/templates/478NCObvctZK/data`,
-      {
-        headers: myHeaders,
-        method: "GET",
-      }
-    );
-    let product = await resProduct.json();
-    dataSugesst = { term: term, collection: collection, product: product };
-    console.log(dataSugesst);
-    return collection;
+    getSetting();
+    //call api
+    try {
+      let resTerm = await fetch(
+        `https://api.json-generator.com/templates/DTPRZfJQMCHV/data`,
+        {
+          headers: myHeaders,
+          method: "GET",
+        }
+      );
+      let term = await resTerm.json();
+      let resCollection = await fetch(
+        `https://api.json-generator.com/templates/pPYRLlfbeG0g/data`,
+        {
+          headers: myHeaders,
+          method: "GET",
+        }
+      );
+      let collection = await resCollection.json();
+      let resProduct = await fetch(
+        `https://api.json-generator.com/templates/478NCObvctZK/data`,
+        {
+          headers: myHeaders,
+          method: "GET",
+        }
+      );
+      let product = await resProduct.json();
+      dataSugesst = { term: term, collection: collection, product: product };
+      console.log(dataSugesst);
+      return collection;
+    } catch (error) {
+      alert(error);
+    }
   });
 
   const searchcharacters = () => {
@@ -300,10 +374,41 @@
       products_div.append(p_error);
     }
   };
+  //do form
+  const doSetting = () => {
+    let dataForm = new FormData();
+    let data = {};
 
-  const charDetails = (el) => {
-    localStorage.setItem("charDetail", JSON.stringify(el));
-    window.location.href = "character.html";
-    // console.log("el:", el);
+    dataForm.append("nChatacter", sNumberType.value);
+    dataForm.append("checkSuggest", sChar.checked);
+    dataForm.append("checkCollection", sCollec.checked);
+    dataForm.append("checkProduct", sProduct.checked);
+
+    for (let [k, v] of dataForm.entries()) {
+      data[k] = v;
+    }
+    console.log(data);
+    saveSetting(data);
+    return false;
+  };
+  const saveSetting = (el) => {
+    localStorage.setItem("setting", JSON.stringify(el));
+    location.reload();
+  };
+  const getSetting = () => {
+    defaultSetting = JSON.parse(localStorage.getItem("setting"));
+    if (defaultSetting) {
+      sChar.checked = defaultSetting.checkSuggest == "true" ? true : false;
+      sCollec.checked = defaultSetting.checkCollection == "true" ? true : false;
+      sProduct.checked = defaultSetting.checkProduct == "true" ? true : false;
+      sNumberType.defaultValue = defaultSetting.nChatacter;
+      document.querySelector(".suggestion").style.display =
+        defaultSetting.checkSuggest == "true" ? "block" : "none";
+      document.querySelector(".collection").style.display =
+        defaultSetting.checkCollection == "true" ? "block" : "none";
+      document.querySelector(".product").style.display =
+        defaultSetting.checkProduct == "true" ? "block" : "none";
+      console.log(defaultSetting);
+    }
   };
 </script>
