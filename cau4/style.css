@@ -124,8 +124,7 @@ div.setting input[type="submit"] {
   position: relative;
   z-index: 999;
 }
-.search-result::before {
-}
+
 .suggestion .suggestion-header,
 .collection .collection-header,
 .product .product-header {

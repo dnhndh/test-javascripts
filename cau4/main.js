@@ -45,17 +45,20 @@ const throttleFn = () => {
 //check hiden result search
 const main = () => {
   let query = document.getElementById("query").value;
-  if (defaultSetting && query.length >= defaultSetting.nChatacter) {
-    result_div.style.visibility = "visible";
-    let res = searchcharacters(); // Returned array will be a promise;
-    appendcharacters(res); // Add results to the div;
-  } else if (!defaultSetting && query.length > 0) {
-    result_div.style.visibility = "visible";
-    let res = searchcharacters();
-    appendcharacters(res);
-  } else {
-    console.log(defaultSetting);
+  if (!defaultSetting) {
     result_div.style.visibility = "hidden";
+  } else {
+    if (query.length == 0) {
+      result_div.style.visibility = "hidden";
+      return;
+    } else if (query.length >= defaultSetting.nChatacter) {
+      result_div.style.visibility = "visible";
+      let res = searchcharacters(); // Returned array will be a promise;
+      appendcharacters(res); // Add results to the div;
+    } else {
+      result_div.style.visibility = "hidden";
+      return;
+    }
   }
 };
 
@@ -82,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async function getTerms(event) {
     console.log(dataSugesst);
     return collection;
   } catch (error) {
-    alert(error);
+    alert("error api");
   }
 });
 
